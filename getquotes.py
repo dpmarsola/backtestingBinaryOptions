@@ -1,7 +1,7 @@
 import requests
 from datetime import datetime
 
-def get_todays_quotes():
+def get_quotes_from_binance_1m_interval():
     url = 'https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m'
     response = requests.get(url)
     data = response.json()
@@ -22,5 +22,5 @@ def save_quotes_to_file(data):
         f.write(str(data))
 
 if __name__ == '__main__':
-    data = get_todays_quotes()
+    data = get_quotes_from_binance_1m_interval()
     save_quotes_to_file(data)
