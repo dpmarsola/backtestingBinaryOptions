@@ -48,7 +48,7 @@ try {
   const tickResponse = async (res) => {
     const data = JSON.parse(res.data);
     if (data.error !== undefined) {
-      console.log(thisdate + " Error : ", data.error.message);
+      console.log(thisdate + " - Error : ", data.error.message);
       connection.removeEventListener("message", tickResponse, false);
       await api.disconnect();
     }
