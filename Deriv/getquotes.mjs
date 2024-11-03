@@ -3,8 +3,18 @@ import WebSocket from "ws";
 import fs from "fs";
 
 const home_dir = process.argv[2];
-if ( home_dir == undefined) {
-  throw new Error("Nome do arquivo de saida não informado");
+const ticker = process.argv[3];
+const granularity = process.argv[4];
+const count = process.argv[5];
+const thisdate = new Date(Date.now());
+let interval = 0;
+let intervalUnit = "";
+
+if ( home_dir == undefined || ticker == undefined || granularity == undefined || count == undefined) {
+  throw new Error("Syntax: node getquotes.mjs <home_dir> <tick> <granularity> <count>");
+} else {
+  interval = granularity/60;
+  intervalUnit = "m";
 }
 
 try {
@@ -26,11 +36,11 @@ try {
 
   const tickStream = () =>
     api.subscribe({
-      ticks_history: "cryBTCUSD",
+      ticks_history: ticker,
       adjust_start_time: 1,
-      count: 10,
+      count: count,
       end: "latest",
-      granularity: 1800,
+      granularity: granularity,
       start: 1,
       style: "candles",
     });
@@ -38,7 +48,7 @@ try {
   const tickResponse = async (res) => {
     const data = JSON.parse(res.data);
     if (data.error !== undefined) {
-      console.log("Error : ", data.error.message);
+      console.log(thisdate + " Error : ", data.error.message);
       connection.removeEventListener("message", tickResponse, false);
       await api.disconnect();
     }
@@ -63,8 +73,13 @@ try {
       }
 
       output = output + " ]" + "\n";
-      let thisdate = new Date(Date.now());
-      let filename = home_dir + '/datasource/Deriv_30m_' + thisdate.getDay() + '_' + thisdate.getMonth() + '_' + thisdate.getFullYear() + '_' + thisdate.getHours() + '_' + thisdate.getMinutes() + '_' + thisdate.getSeconds() + '.txt';
+
+      if (interval < 1) {
+        interval = interval * 60;
+        intervalUnit = "s";
+      }
+
+      let filename = home_dir + '/datasource/Deriv_' + ticker + "_" +  count + "counts_" + interval + intervalUnit + '_' + thisdate.getDate() + '_' + thisdate.getMonth() + '_' + thisdate.getFullYear() + '_' + thisdate.getHours() + '_' + thisdate.getMinutes() + '_' + thisdate.getSeconds() + '.txt';
       fs.appendFile(filename, output, (err) => {
 
         // In case of a error throw err.
