@@ -1,5 +1,5 @@
-HOME_DIR=~/workspace/backtestingBinaryOptions
-
+# Get environment variables
+source ../Common/environment.sh
 
 main(){
     # Get the quotes

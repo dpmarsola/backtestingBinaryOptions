@@ -1,9 +1,6 @@
 #!/usr/bin/bash
-
-HOME_DIR=~/workspace/backtestingBinaryOptions
-# Get the quotes from the website
-cd $HOME_DIR/Deriv
-
+# Get environment variables
+source ../Common/environment.sh
 
 #Get args from command line
 ticker=$1

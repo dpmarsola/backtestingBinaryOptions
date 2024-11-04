@@ -134,17 +134,24 @@ def read_file(filename):
             count_processed += 1
             price_went_up_flag_ytday = price_went_up_flag
 
-        print("Ranging from: " + first_quote_start_time_human_fmt + " UTC (" + first_quote_start_time_human_fmt_local + " GMT-3/Sao Paulo)")
-        print("          to: " + quote_end_time_human_fmt + " UTC (" + quote_end_time_human_fmt_local + " GMT-3/Sao Paulo)")
-        print(" ")
-        print("The longest streak was " + str(max_streak) + " times on " + max_streak_date + " UTC (" + max_streak_date_local + " GMT-3/Sao Paulo)" + " when it was going " + streak_direction + ".")
-        print("==============================================================================================")
-        print(" ")
-        print(" ")
-        print(" ")
+        if debug_flag:
+            print("Ranging from: " + first_quote_start_time_human_fmt + " UTC (" + first_quote_start_time_human_fmt_local + " GMT-3/Sao Paulo)")
+            print("          to: " + quote_end_time_human_fmt + " UTC (" + quote_end_time_human_fmt_local + " GMT-3/Sao Paulo)")
+            print(" ")
+            print("The longest streak was " + str(max_streak) + " times on " + max_streak_date + " UTC (" + max_streak_date_local + " GMT-3/Sao Paulo)" + " when it was going " + streak_direction + ".")
+            print("==============================================================================================")
+            print(" ")
+            print(" ")
+            print(" ")
+        
+        output_line = f'[\'{filename}\', \'{first_quote_start_time_human_fmt}\', \'{first_quote_start_time_human_fmt_local}\' , \'{quote_end_time_human_fmt}\', \'{quote_end_time_human_fmt_local}\' , {max_streak}, \'{max_streak_date}\', \'{streak_direction}\']'
+
+        with open("./output/output.txt", "a") as output_file:
+            output_file.write(output_line + "\n")
+            output_file.close()
 
 def list_files_in_dir():
-    return subprocess.run(["ls", "./datasource"], capture_output=True, text=True).stdout.split()
+    return subprocess.run(["ls", "--ignore=bkp*", "./datasource"], capture_output=True, text=True).stdout.split()
     
 
 if __name__ == '__main__':
