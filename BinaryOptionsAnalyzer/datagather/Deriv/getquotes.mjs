@@ -68,11 +68,14 @@ try {
         let volume = 9999;
         let end_time = data.candles[i].epoch + 1800;
 
-        output = output + "[ " + start_time + ", '"+ open + "' , '" + high + "' , '" + low + "' , '" + close + "' , '" + volume + "' , " + end_time + " ]" + ",";
+        if (i == 0){
+          // output the header of csv file
+          output = "start_time, open, high, low, close, volume, end_time" + "\n";
+        }
+
+        output = output + start_time + ", '"+ open + "' , '" + high + "' , '" + low + "' , '" + close + "' , '" + volume + "' , " + end_time + "\n";
 
       }
-
-      output = output + " ]" + "\n";
 
       if (interval < 1) {
         interval = interval * 60;

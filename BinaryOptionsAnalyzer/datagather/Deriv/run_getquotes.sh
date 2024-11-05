@@ -7,18 +7,6 @@ ticker=$1
 interval_in_secs=$2
 counts=$3
 
-if [ -z "$ticker" ]; then
-    ticker="cryBTCUSD"
-fi
-
-if [ -z "$interval_in_secs" ]; then
-    interval_in_secs=1800
-fi
-
-if [ -z "$counts" ]; then
-    counts=10
-fi
-
 echo "============================================ BEGIN =========================================================" >> $logFile
 echo "Running getquotes.mjs wth the following args:" >> $logFile
 echo "HOME_DIR: $HOME_DIR" >> $logFile
